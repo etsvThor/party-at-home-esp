@@ -20,12 +20,12 @@
 #include <FastLED.h>
 
 #define NUM_LEDS 8 //change to number of pixels
-
+#define FRAMES_PER_SECOND  120
 WebSocketsClient webSocket;
 CRGBArray<NUM_LEDS> leds;
-
+uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 #define USE_SERIAL Serial
-
+bool rainbow=0;
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
 	switch(type) {
@@ -52,6 +52,9 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			if (strcmp("blue", (const char *)payload) == 0) {
 				leds(0,NUM_LEDS-1)=CRGB::Blue;
 				FastLED.show();
+			}
+            if (strcmp("rainbow", (const char *)payload) == 0) {
+			    rainbow=!rainbow;
 			}
 			// send message to server
 			// webSocket.sendTXT("message here");
@@ -109,4 +112,12 @@ void setup() {
 
 void loop() {
 	webSocket.loop();
-}
+if(rainbow){
+  fill_rainbow( leds, NUM_LEDS, gHue, 7);
+FastLED.show();  
+// insert a delay to keep the framerate modest}
+FastLED.delay(1000/FRAMES_PER_SECOND); 
+                                                                         
+// do some periodic updates
+EVERY_N_MILLISECONDS( 20 ) { gHue++; } // slowly cycle the "base color" t
+}}
