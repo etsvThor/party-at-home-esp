@@ -2,8 +2,8 @@
 
 ## Install Platformio
 To program the esp the platformio plugin in visual studio code(VSC) can be used or the CLI of Platformio.
-[Download VSC] (https://code.visualstudio.com/download)
-[Guide to install Platformio in VSC] (https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)
+[Download VSC](https://code.visualstudio.com/download)
+[Guide to install Platformio in VSC](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)
 
 ## Upload and test connection
 Upload it to the esp and connect to Thorpary access point and fill in your wifi credentials.
