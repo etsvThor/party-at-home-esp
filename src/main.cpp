@@ -97,7 +97,7 @@ void setup() {
     wifiManager.autoConnect("ThorpartyAP");
 
 	// server address, port and URL
-	webSocket.begin("party.thor.edu", 80 , "/");
+	webSocket.begin("wss://party-at-home.thor.edu", 443 , "/ws/chat/henk/");
 
 	// event handler
 	webSocket.onEvent(webSocketEvent);
