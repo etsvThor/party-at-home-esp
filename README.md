@@ -18,4 +18,7 @@ Fill in the following in the url and press open:
 ```
 wss://party-at-home.thor.edu:443/ws/chat/thorparty/
 ```
-To change color send a request with the color: red , blue or green . Also a rainbow mode and colorchord mode can be activated by sending these to the websocket.
+To change color send a request with the color: red , blue or green . 
+Also a rainbow mode and colorchord mode can be activated by sending these to the websocket.
+To deactivate these mode send rainbow_off and colorchord_off.
+Changing colors is not supported when either of these modes are activated.

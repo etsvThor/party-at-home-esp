@@ -40,7 +40,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			break;
 		case WStype_TEXT:
             if(colorchord==1){
-            if (strcmp("colorchord", (const char *)payload) == 0) {
+            if (strcmp("colorchord_off", (const char *)payload) == 0) {
                 colorchord=0;
 			    USE_SERIAL.printf("Colorchord mode deactivated!");
 			}else{
@@ -88,8 +88,12 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 				FastLED.show();
 			}
             if (strcmp("rainbow", (const char *)payload) == 0) {
-			    rainbow=!rainbow;
-			}}
+			    rainbow=1;
+			}
+            if (strcmp("rainbow_off", (const char *)payload) == 0) {
+			    rainbow=0;
+			}
+            }
 			// send message to server
 			// webSocket.sendTXT("message here");
 			break;
