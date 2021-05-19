@@ -1,7 +1,5 @@
 /*
- * WebSocketClient.ino
  *
- *  Created on: 24.05.2015
  *
  */
 
@@ -19,13 +17,14 @@
 #define FASTLED_ESP8266_RAW_PIN_ORDER
 #include <FastLED.h>
 
-#define NUM_LEDS 8 //change to number of pixels
+#define NUM_LEDS 60 //change to number of pixels
 #define FRAMES_PER_SECOND  120
 WebSocketsClient webSocket;
 CRGBArray<NUM_LEDS> leds;
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 #define USE_SERIAL Serial
 bool rainbow=0;
+bool colorchord=0;
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
 	switch(type) {
@@ -40,7 +39,42 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 		}
 			break;
 		case WStype_TEXT:
+            if(colorchord==1){
+            if (strcmp("colorchord", (const char *)payload) == 0) {
+                colorchord=0;
+			    USE_SERIAL.printf("Colorchord mode deactivated!");
+			}else{
+                char * rgbString;
+                int r,g,b;
+                rgbString= strtok(((char *)payload), " ,.-");
+                int start=millis();
+                for(int l=0;l<NUM_LEDS;l++){
+                    for(int i=0;i<4;i++){
+                    //USE_SERIAL.printf("%s\n", rgbString);
+                    switch(i) {
+                        case 0:
+                           r=atoi(rgbString);
+                           break;
+                        case 1:
+                           g=atoi(rgbString);
+                           break;
+                        case 2:
+                           b=atoi(rgbString);
+                           break;
+                        }
+                    rgbString= strtok(NULL, " ,.-");
+                    }
+                    leds[l].setRGB(r,g,b);
+                }
+			    USE_SERIAL.printf("Time:%ld\n", millis()-start);
+				FastLED.show();
+            }
+            }else{
 			USE_SERIAL.printf("[WSc] get text: %s\n", payload);
+            if (strcmp("colorchord", (const char *)payload) == 0) {
+                colorchord=1;
+			    USE_SERIAL.printf("Colorchord mode activated!");
+			}
 			if (strcmp("green", (const char *)payload) == 0) {
 				leds(0,NUM_LEDS-1)=CRGB::Green;
 				FastLED.show();
@@ -55,7 +89,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 			}
             if (strcmp("rainbow", (const char *)payload) == 0) {
 			    rainbow=!rainbow;
-			}
+			}}
 			// send message to server
 			// webSocket.sendTXT("message here");
 			break;
