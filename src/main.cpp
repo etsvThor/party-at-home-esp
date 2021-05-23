@@ -20,7 +20,7 @@
 FASTLED_USING_NAMESPACE
 
 #define NUM_LEDS 60 //change to number of pixels
-#define FRAMES_PER_SECOND 120
+#define FRAMES_PER_SECOND 60
 WebSocketsClient webSocket;
 CRGBArray<NUM_LEDS> leds;
 
