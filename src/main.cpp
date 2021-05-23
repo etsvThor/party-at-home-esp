@@ -139,6 +139,11 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 	case WStype_TEXT:
 		if (colorchord == 1)
 		{
+            if (strcmp("colorchord", (const char *)payload) == 0)
+			{
+				colorchord = 1;
+                break;
+			}
 			if (strcmp("colorchord_off", (const char *)payload) == 0)
 			{
 				colorchord = 0;
