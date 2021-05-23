@@ -129,7 +129,9 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 	case WStype_CONNECTED:
 	{
 		USE_SERIAL.printf("[WSc] Connected to url: %s\n", payload);
-
+        FastLED.addLeds<NEOPIXEL, 4>(leds, NUM_LEDS);
+	    leds(0, NUM_LEDS - 1) = CRGB::Green;
+	    FastLED.show();
 		// send message to server when Connected
 		//webSocket.sendTXT("Connected");
 	}
@@ -178,6 +180,14 @@ void webSocketEvent(WStype_t type, uint8_t *payload, size_t length)
 			USE_SERIAL.printf("[WSc] get text: %s\n", payload);
 			if (strcmp("colorchord", (const char *)payload) == 0)
 			{
+	            leds(0, NUM_LEDS - 1) = CRGB::Blue;
+	            FastLED.show();
+                FastLED.delay(500);
+                FastLED.clear();
+	            FastLED.show();
+                FastLED.delay(500);
+	            leds(0, NUM_LEDS - 1) = CRGB::Blue;
+	            FastLED.show();
                 pattern = 0;
 				colorchord = 1;
 				USE_SERIAL.printf("Colorchord mode activated!");
