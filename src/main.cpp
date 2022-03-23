@@ -11,6 +11,11 @@
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 
+#include <DoubleResetDetector.h>
+#define DRD_TIMEOUT 10
+#define DRD_ADDRESS 0
+DoubleResetDetector drd(DRD_TIMEOUT, DRD_ADDRESS);
+
 #include <WebSocketsClient.h>
 
 #include <Hash.h>
@@ -280,13 +285,19 @@ void setup()
 	USE_SERIAL.println();
 	USE_SERIAL.println();
 
+	WiFiManager wifiManager;
+  if (drd.detectDoubleReset()) {
+    USE_SERIAL.println("Double Reset Detected, force wifimanager");
+    wifiManager.startConfigPortal("ThorpartyAP");
+  }
+
 	for (uint8_t t = 4; t > 0; t--)
 	{
 		USE_SERIAL.printf("[SETUP] BOOT WAIT %d...\n", t);
 		USE_SERIAL.flush();
 		delay(1000);
 	}
-	WiFiManager wifiManager;
+  drd.stop();
 	wifiManager.autoConnect("ThorpartyAP");
 
 	// server address, port and URL
